@@ -295,3 +295,43 @@ Trịnh Văn Giang
 ✉️ giangnbhust@gmail.com  
 
 Version: 1.0.0 (2025-10)
+
+---
+
+🛠 **Chạy dự án trên terminal**
+
+- Chạy local (virtualenv, cho phát triển)
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env     # chỉnh .env theo môi trường của bạn
+uvicorn src.api:app --host 0.0.0.0 --port 8000 --reload
+```
+
+- Chạy production nhanh với uvicorn (2 workers)
+```bash
+uvicorn src.api:app --host 0.0.0.0 --port 8000 --workers 2
+```
+
+- Chạy bằng Docker (build image từ dockerfile)
+```bash
+docker build -t rag-course:latest -f dockerfile .
+docker run -p 8000:8000 --env-file .env --rm rag-course:latest
+```
+
+- Chạy toàn bộ stack bằng Docker Compose (nếu có docker-compose.yml)
+```bash
+docker compose up -d --build
+# logs: docker compose logs -f
+# dừng: docker compose down
+```
+
+- Script helper (nếu tồn tại scripts/run_api.sh)
+```bash
+bash ./scripts/run_api.sh
+```
+
+Ghi chú ngắn:
+- Đảm bảo đặt biến môi trường trong .env (OPENAI_API_KEY, HF_TOKEN, CHROMA_DIR, v.v.).  
+- Cổng mặc định API: http://localhost:8000/docs

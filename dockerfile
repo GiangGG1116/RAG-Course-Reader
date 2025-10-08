@@ -20,24 +20,24 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # ===== runtime =====
 FROM base AS runtime
-# Tạo user không phải root
+
+# Tạo user không phải root (chỉ tạo, chưa switch)
 RUN useradd -m -u 1000 appuser
-USER appuser
 
-
-# Copy site-packages từ layer deps
+# Copy site-packages từ layer deps (thực hiện trước khi chuyển user)
 COPY --from=deps /usr/local/lib/python3.10 /usr/local/lib/python3.10
 COPY --from=deps /usr/local/bin /usr/local/bin
 
-
-# Copy code
-COPY --chown=appuser:appuser . .
+# Copy code (lưu dưới quyền root rồi chỉnh chủ sở hữu)
+COPY . .
+# Thiết lập quyền sở hữu và biến môi trường
+RUN chown -R appuser:appuser /app && \
+    mkdir -p /app/storage /app/data && \
+    chmod -R 755 /app/storage /app/data
 ENV PYTHONPATH=/app
 
-
-# Thư mục persist
-RUN mkdir -p /app/storage /app/data && \
-    chmod -R 755 /app/storage /app/data
+# Chuyển sang user không phải root để chạy an toàn
+USER appuser
 
 
 EXPOSE 8000

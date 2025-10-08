@@ -21,36 +21,36 @@ def _hash(s: str) -> str:
     return hashlib.md5(s.encode("utf-8")).hexdigest()[:10]
 
 
-def ingest_from_yaml(cfg_path: str = "scripts/ingest_urls.yaml") -> list[Document]:
-    cfg = yaml.safe_load(Path(cfg_path).read_text(encoding="utf-8"))
-    docs: list[Document] = []
+# def ingest_from_yaml(cfg_path: str = "scripts/ingest_urls.yaml") -> list[Document]:
+#     cfg = yaml.safe_load(Path(cfg_path).read_text(encoding="utf-8"))
+#     docs: list[Document] = []
 
 
-    # URLs
-    for url in cfg.get("urls", []):
-        loader = WebBaseLoader([url], header_template={"User-Agent": USER_AGENT})
-        for doc in loader.load():
-            html = doc.page_content
-            md = html_to_markdown(html)
-            md = normalize_text(md)
-            hid = _hash(url)
-            _save(RAW / f"{hid}.html", html)
-            _save(PRO / f"{hid}.md", md)
-            docs.append(Document(page_content=md, metadata={"source": url}))
+#     # URLs
+#     for url in cfg.get("urls", []):
+#         loader = WebBaseLoader([url], header_template={"User-Agent": USER_AGENT})
+#         for doc in loader.load():
+#             html = doc.page_content
+#             md = html_to_markdown(html)
+#             md = normalize_text(md)
+#             hid = _hash(url)
+#             _save(RAW / f"{hid}.html", html)
+#             _save(PRO / f"{hid}.md", md)
+#             docs.append(Document(page_content=md, metadata={"source": url}))
 
 
-    # Sitemaps (tự lọc pdf/md)
-    for sm in cfg.get("sitemaps", []):
-        sl = SitemapLoader(web_path=sm, filter_urls=[r".*"], header_template={"User-Agent": USER_AGENT})
-        for d in sl.load():
-            url = d.metadata.get("source", "")
-            md = normalize_text(d.page_content)
-            hid = _hash(url)
-            _save(PRO / f"{hid}.md", md)
-            docs.append(Document(page_content=md, metadata={"source": url}))
+#     # Sitemaps (tự lọc pdf/md)
+#     for sm in cfg.get("sitemaps", []):
+#         sl = SitemapLoader(web_path=sm, filter_urls=[r".*"], header_template={"User-Agent": USER_AGENT})
+#         for d in sl.load():
+#             url = d.metadata.get("source", "")
+#             md = normalize_text(d.page_content)
+#             hid = _hash(url)
+#             _save(PRO / f"{hid}.md", md)
+#             docs.append(Document(page_content=md, metadata={"source": url}))
 
 
-    return docs
+#     return docs
 
 
 def ingest_local_files(patterns=("*.pdf","*.md","*.txt","*.csv")) -> list[Document]:

@@ -2,7 +2,7 @@ from fastapi import FastAPI, Body
 from pydantic import BaseModel
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 from fastapi.responses import Response
-from src.ingestion import ingest_from_yaml, ingest_local_files
+from src.ingestion import ingest_local_files
 from src.preprocess import deduplicate, enrich_metadata
 from src.embed_index import build_index, load_index
 from src.generate import get_answer
@@ -19,7 +19,7 @@ class AskReq(BaseModel):
 
 @app.post("/ingest")
 def ingest():
-    docs = ingest_from_yaml()
+    # docs = ingest_from_yaml()
     docs += ingest_local_files()
     docs = enrich_metadata(deduplicate(docs))
     build_index(docs)

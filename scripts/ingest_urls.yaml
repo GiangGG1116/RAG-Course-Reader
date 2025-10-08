@@ -1,6 +1,10 @@
-urls:
-  - https://aws.amazon.com/training/
-  - https://www.deeplearning.ai/short-courses/
-  - https://www.langchain.com/blog
-sitemaps:
-  - https://www.fast.ai/sitemap.xml
+# urls:
+#   - https://aws.amazon.com/training/
+#   - https://www.deeplearning.ai/short-courses/
+#   - https://www.langchain.com/blog
+# sitemaps:
+#   - https://www.fast.ai/sitemap.xml
+
+pdf:
+  - https://arxiv.org/pdf/2305.10843.pdf
+  - https://arxiv.org/pdf/2305.10403.pdf

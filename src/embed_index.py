@@ -1,6 +1,6 @@
 from pathlib import Path
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
+# from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
@@ -20,7 +20,7 @@ splitter = RecursiveCharacterTextSplitter(
 def _get_embedder():
     if SETTINGS.openai_api_key and SETTINGS.provider=="openai":
         return OpenAIEmbeddings(model="text-embedding-3-large")
-    return HuggingFaceEmbeddings(model_name=SETTINGS.embedding_model)
+    # return HuggingFaceEmbeddings(model_name=SETTINGS.embedding_model)
 
 
 def build_index(docs: list[Document]):
@@ -32,5 +32,13 @@ def build_index(docs: list[Document]):
 
 
 def load_index():
-    embeddings = _get_embedder()
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-large",OPENAI_API_KEY=SETTINGS.openai_api_key)
     return Chroma(persist_directory=CHROMA_DIR, embedding_function=embeddings)
+
+if __name__ == "__main__":
+    # Test
+    from src.ingestion import ingest_local_files
+    docs = ingest_local_files()
+    print(f"Ingested {len(docs)} documents")
+    build_index(docs)
+    print("Index built and saved.")
