@@ -1,0 +1,45 @@
+# Core LangChain (v0.3 line, latest as of Oct 2025)
+langchain==0.3.27 # framework (LCEL)
+langchain-core==0.3.78 # base abstractions / runnables
+langchain-community==0.3.30 # loaders, vectorstores, etc.
+
+
+# Providers / partners (latest stable lines)
+langchain-openai==0.3.35 # ChatOpenAI, OpenAIEmbeddings
+langchain-huggingface==0.3.1 # HF embeddings / endpoints
+openai==2.2.0 # OpenAI Python SDK >=2.x
+
+
+# Vector stores / embeddings
+chromadb==0.5.5
+faiss-cpu==1.8.0.post1
+sentence-transformers==3.0.1
+FlagEmbedding==1.2.10
+
+
+# Ingestion / parsing
+beautifulsoup4==4.12.3
+readability-lxml==0.8.1
+markdownify==0.12.1
+lxml==4.9.3
+
+
+# API & utils
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-dotenv==1.0.1
+pydantic==2.9.2
+
+
+# Eval & data
+ragas==0.1.10
+scikit-learn==1.5.1
+pandas==2.2.2
+numpy==1.26.4
+
+
+# Monitoring
+prometheus-client==0.20.0
+
+
+tqdm==4.66.4
